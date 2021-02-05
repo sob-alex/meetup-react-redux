@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import PostDetails from './components/PostDetails';
+import PostsList from './components/PostsList';
+import rootReducer from './reducers';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore, compose,applyMiddleware  } from 'redux';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <div className='App'>
+          <Switch>
+            <Route path='/post/:id' component={PostDetails} />
+            <Route path='/' component={PostsList} />
+          </Switch>
+        </div>
+      </Router>
+    </Provider>
   );
 }
 
